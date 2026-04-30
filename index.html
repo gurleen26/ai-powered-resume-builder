@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ResumeAI — Build your resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── TOP NAV ── -->
+  <nav class="topnav">
+    <div class="nav-brand">
+      <span class="brand-dot"></span>
+      ResumeAI
+    </div>
+    <div class="nav-steps">
+      <div class="step-pill active" data-step="1">01 · Info</div>
+      <div class="step-pill" data-step="2">02 · Experience</div>
+      <div class="step-pill" data-step="3">03 · Skills</div>
+      <div class="step-pill" data-step="4">04 · Education</div>
+    </div>
+    <button class="btn-download" id="btnDownload">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download PDF
+    </button>
+  </nav>
+
+  <!-- ── MAIN LAYOUT ── -->
+  <main class="layout">
+
+    <!-- LEFT: Form Panel -->
+    <section class="form-panel">
+
+      <!-- STEP 1: Personal Info -->
+      <div class="form-step active" id="step-1">
+        <div class="step-header">
+          <span class="step-tag">Step 01</span>
+          <h2>Personal Info</h2>
+          <p>Let's start with the basics.</p>
+        </div>
+
+        <div class="fields">
+          <div class="field-group">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="Arjun Sharma" oninput="syncPreview()" />
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label>Job Title</label>
+              <input type="text" id="title" placeholder="Frontend Developer" oninput="syncPreview()" />
+            </div>
+            <div class="field-group">
+              <label>Location</label>
+              <input type="text" id="location" placeholder="Mumbai, India" oninput="syncPreview()" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label>Email</label>
+              <input type="email" id="email" placeholder="arjun@email.com" oninput="syncPreview()" />
+            </div>
+            <div class="field-group">
+              <label>Phone</label>
+              <input type="text" id="phone" placeholder="+91 98765 43210" oninput="syncPreview()" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label>LinkedIn</label>
+              <input type="text" id="linkedin" placeholder="linkedin.com/in/arjun" oninput="syncPreview()" />
+            </div>
+            <div class="field-group">
+              <label>GitHub</label>
+              <input type="text" id="github" placeholder="github.com/arjun" oninput="syncPreview()" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Summary</label>
+            <textarea id="summary" rows="4" placeholder="Write 2–3 lines about yourself and what you bring to the table..." oninput="syncPreview()"></textarea>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <span></span>
+          <button class="btn-next" onclick="goStep(2)">Next → Experience</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Experience -->
+      <div class="form-step" id="step-2">
+        <div class="step-header">
+          <span class="step-tag">Step 02</span>
+          <h2>Experience</h2>
+          <p>Add your work history, internships, or projects.</p>
+        </div>
+
+        <div id="exp-list"></div>
+
+        <button class="btn-add" onclick="addExperience()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Experience
+        </button>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goStep(1)">← Back</button>
+          <button class="btn-next" onclick="goStep(3)">Next → Skills</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Skills -->
+      <div class="form-step" id="step-3">
+        <div class="step-header">
+          <span class="step-tag">Step 03</span>
+          <h2>Skills</h2>
+          <p>Add your technical and soft skills.</p>
+        </div>
+
+        <div class="fields">
+          <div class="field-group">
+            <label>Technical Skills</label>
+            <input type="text" id="tech-skills" placeholder="React, JavaScript, CSS, Git, Node.js" oninput="syncPreview()" />
+            <span class="hint">Comma separated</span>
+          </div>
+          <div class="field-group">
+            <label>Tools & Platforms</label>
+            <input type="text" id="tools" placeholder="VS Code, Figma, GitHub, Vercel" oninput="syncPreview()" />
+            <span class="hint">Comma separated</span>
+          </div>
+          <div class="field-group">
+            <label>Languages</label>
+            <input type="text" id="languages" placeholder="English (fluent), Hindi (native)" oninput="syncPreview()" />
+          </div>
+          <div class="field-group">
+            <label>Certifications (optional)</label>
+            <textarea id="certs" rows="3" placeholder="AWS Cloud Practitioner, Meta Frontend Developer..." oninput="syncPreview()"></textarea>
+          </div>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goStep(2)">← Back</button>
+          <button class="btn-next" onclick="goStep(4)">Next → Education</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Education -->
+      <div class="form-step" id="step-4">
+        <div class="step-header">
+          <span class="step-tag">Step 04</span>
+          <h2>Education</h2>
+          <p>Your academic background.</p>
+        </div>
+
+        <div id="edu-list"></div>
+
+        <button class="btn-add" onclick="addEducation()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Education
+        </button>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goStep(3)">← Back</button>
+          <button class="btn-finish" onclick="finishResume()">
+            ✦ Finish &amp; Preview
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT: Live Preview -->
+    <section class="preview-panel">
+      <div class="preview-top">
+        <div class="preview-label">Live Preview</div>
+        <div class="template-toggle">
+          <button class="tmpl-btn active" onclick="switchTemplate('classic')" id="tmpl-classic">Classic</button>
+          <button class="tmpl-btn" onclick="switchTemplate('modern')" id="tmpl-modern">Modern</button>
+        </div>
+      </div>
+      <div class="preview-wrap">
+        <div class="resume-sheet" id="resumePreview">
+          <!-- Rendered by templates/template-classic.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- AI Improve Modal -->
+  <div class="modal-overlay" id="aiModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-tag">AI ✦</span>
+        <h3>Improve with AI</h3>
+        <button class="modal-close" onclick="closeAIModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <label>Your bullet point</label>
+        <textarea id="aiInput" rows="3" placeholder="e.g. worked on website features"></textarea>
+        <button class="btn-ai-go" id="btnAIGo" onclick="improveWithAI()">
+          <span id="aiBtn-text">✦ Improve it</span>
+        </button>
+        <div class="ai-result" id="aiResult" style="display:none">
+          <label>Improved version</label>
+          <p id="aiOutput"></p>
+          <button class="btn-use" onclick="useAISuggestion()">Use this</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="templates/template-classic.js"></script>
+  <script src="templates/template-modern.js"></script>
+  <script src="app.js"></script>
+  <script src="ai.js"></script>
+  <script src="pdf.js"></script>
+</body>
+</html>
